@@ -1,0 +1,3 @@
+C:\Users\Skleznev\source\repos\bbcoa\bbcoa\obj\Debug\bbcoa.njsprojAssemblyReference.cache
+C:\Users\Skleznev\source\repos\bbcoa\bbcoa\obj\Debug\bbcoa.njsproj.CoreCompileInputs.cache
+C:\Users\Skleznev\source\repos\bbcoa\bbcoa\bin\Microsoft.NodejsTools.WebRole.dll
