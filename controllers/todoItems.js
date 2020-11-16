@@ -1,21 +1,25 @@
 var Datastore = require('nedb');
-var db = new Datastore({ filename: 'users' });
+var db = new Datastore({ filename: 'items' });
 db.loadDatabase();
-
 
 var sendJSONresponse = function (res, status, content) {
 	res.status(status);
+
+	for (var k in content) {
+		delete content[k]['secret'];
+	}
 	res.json(content);
 };
 
 module.exports.getAll = (req, res) => {
 	db.find({}, (err, docs) => {
+		
 		sendJSONresponse(res, 200, docs)
 	})
 }
 
 module.exports.getOne = (req, res) => {
-	db.findOne({
+	db.find({
 		_id : req.params.id
 	}, (err, docs) => {
 		sendJSONresponse(res, 200, docs)
@@ -25,7 +29,6 @@ module.exports.getOne = (req, res) => {
 module.exports.addOne = (req, res) => {
 
 	db.insert({
-		_id: getNextSequence("id"),
 		name: req.body.name,
 		isComplete: req.body.isComplete,
 		secret: req.body.secret
@@ -35,9 +38,17 @@ module.exports.addOne = (req, res) => {
 }
 
 module.exports.updateOne = (req, res) => {
-	sendJSONresponse(res, 200, 'Update One')
+	db.update({ _id: req.params.id }, {
+		name: req.body.name,
+		isComplete: req.body.isComplete,
+		secret: req.body.secret
+	}, (err, docs) => {
+		sendJSONresponse(res, 200, docs)
+	})
 }
 
 module.exports.deleteOne = (req, res) => {
-	sendJSONresponse(res, 200, 'Delete One')
+	db.remove({ _id: req.params.id }, (err, docs) => {
+		sendJSONresponse(res, 200, docs)
+	})
 }
